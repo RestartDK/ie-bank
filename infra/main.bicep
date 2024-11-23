@@ -55,6 +55,21 @@ param appServiceAPIDBHostFLASK_APP string
 @description('The value for the environment variable FLASK_DEBUG')
 param appServiceAPIDBHostFLASK_DEBUG string
 
+@description('The name of the Key Vault')
+param keyVaultName string = 'ie-bank-kv-dev'
+
+@description('The arrays of role assignments for the Key Vault')
+param keyVaultRoleAssignments array = []
+
+module keyVault 'modules/keyvault.bicep' = {
+  name: 'keyVault'
+  params: {
+    keyVaultName: keyVaultName
+    location: location
+    roleAssignments: keyVaultRoleAssignments
+  }
+}
+
 // Use Key Vault for administrator login password later
 module postgresSQLServerModule 'modules/postgre-sql-server.bicep' = {
   name: 'postgresSQLServerModule'
